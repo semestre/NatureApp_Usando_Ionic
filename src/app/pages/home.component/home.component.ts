@@ -4,23 +4,21 @@ import { environment } from '../../../environments/environment';
 import { HomeService } from '../../core/services/home.service';
 @Component({
   selector: 'app-home',
-  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  providers: [HomeService]
+  standalone: false
 })
 export class HomeComponent implements OnInit {
 
   map!: mapboxgl.Map;
   style = 'mapbox://styles/mapbox/streets-v11';
-
+  markers : mapboxgl.Marker[] = [];
+  // backtip
   constructor(private homeService: HomeService) { }
 
   ngOnInit(): void {
    console.log('HomeComponent initialized');
-   this.homeService.getAllPlaces().subscribe((response) => {
-    console.log('Places received from API:', response);
-   });
+   
    console.log(`Mapboxgl version: ${environment}`);
    this.map = new mapboxgl.Map({
     accessToken: environment.MAPBOX_TOKEN,
@@ -28,6 +26,15 @@ export class HomeComponent implements OnInit {
     container: 'map',
     center: [ -102.4, 23.75 ],
     zoom: 15
+   });
+   this.homeService.getAllPlaces().subscribe((placeResponse) => {
+    console.log('Places received from API:', placeResponse);
+    placeResponse.forEach((place) => {
+      const marker = new mapboxgl.Marker()
+      .setLngLat([place.longitude, place.latitude])
+      .addTo(this.map);
+      this.markers.push(marker);
+    });
    });
 
   }
