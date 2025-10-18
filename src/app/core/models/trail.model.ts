@@ -1,13 +1,16 @@
-import { Place } from "./places.model";
+import { Place } from "./place.model";
 
 export interface Trail {
   id: number;
-  placeId: number;
-  place: Place; 
   name: string;
   distanceKm: number;
   estimatedTimeMinutes: number;
   difficulty: string;
-  path: string; 
-  isLoop: boolean; 
+  path: string;
+  isLoop: boolean;
+  place: Place;  // Nested place info
 }
+
+
+
+

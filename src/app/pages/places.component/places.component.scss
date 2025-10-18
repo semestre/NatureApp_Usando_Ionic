@@ -1,0 +1,19 @@
+.photo-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;          // space between images
+  margin-top: 10px;
+}
+
+.photo-thumb {
+  width: 150px;       // fixed width
+  height: 100px;      // fixed height
+  object-fit: cover;  // keeps image proportional and crops if needed
+  border-radius: 5px; // optional: rounded corners
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); // optional: small shadow
+  transition: transform 0.2s;
+}
+
+.photo-thumb:hover {
+  transform: scale(1.05); // nice hover effect
+}

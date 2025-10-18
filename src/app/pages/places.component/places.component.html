@@ -1,1 +1,105 @@
-<p>places.component works!</p>
+<nz-table [nzData]="places">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Categoría</th>
+      <th>Lati/Long</th>
+      <th>Altitud (m)</th>
+      <th>Accesible</th>
+      <th>Entrada ($)</th>
+      <th>Horario</th>
+      <th>Creado</th>
+      <th>Photos</th>
+      <th>Amenities</th>
+      <th>Trails</th>
+      <th>Mini Map</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <ng-container *ngFor="let place of places">
+      <!-- Main row -->
+      <tr>
+        <td>{{ place.id }}</td>
+        <td>
+          <strong>{{ place.name }}</strong>
+          <br />
+          <small class="text-muted">{{ place.description }}</small>
+        </td>
+        <td>
+          <nz-tag nzColor="blue" [nzBordered]="false">
+            {{ place.category | titlecase }}
+          </nz-tag>
+        </td>
+        <td>{{ place.latitude }}, {{ place.longitude }}</td>
+        <td>{{ place.elevationMeters }}</td>
+        <td>
+          <nz-tag [nzColor]="place.accessible ? 'green' : 'red'" [nzBordered]="false">
+            {{ place.accessible ? 'Sí' : 'No' }}
+          </nz-tag>
+        </td>
+        <td>
+          <nz-tag nzColor="gold" [nzBordered]="false">
+            {{ place.entryFee | currency:'USD':'symbol':'1.0-0' }}
+          </nz-tag>
+        </td>
+        <td>{{ place.openingHours }}</td>
+        <td>{{ place.createdAt | date: 'dd/MM/yyyy' }}</td>
+        <td>
+          <button nz-button nzType="primary" nzSize="small" (click)="toggleGallery(place.id)">
+            <span nz-icon nzType="eye"></span>
+            Ver Mas
+          </button>
+        </td>
+        <td>
+          <ng-container *ngFor="let a of place.amenities || []">
+            <nz-tag nzColor="cyan" [nzBordered]="false" style="margin:2px;">
+              {{ a.name }}
+            </nz-tag>
+          </ng-container>
+        </td>
+
+        <td>
+          <div class="trails-cards-container" style="display:flex; flex-wrap:wrap; gap:10px;">
+            <ng-container *ngFor="let t of place.trails || []">
+              <nz-card style="width: 200px; margin-bottom: 10px;">
+                <nz-card-meta
+                  [nzTitle]="t.name"
+                  [nzDescription]="t.difficulty + ' | ' + t.distanceKm + ' km | ' + t.estimatedTimeMinutes + ' min'">
+                </nz-card-meta>
+                <div style="margin-top: 5px;">
+                  <nz-tag [nzColor]="t.isLoop ? 'green' : 'red'" [nzBordered]="false">
+                    {{ t.isLoop ? 'Loop' : 'Out & Back' }}
+                  </nz-tag>
+                </div>
+              </nz-card>
+            </ng-container>
+          </div>
+        </td>
+
+        <td>
+          <div 
+            [id]="'mini-map-' + place.id" 
+            class="mini-map-container" 
+            style="width: 200px; height: 150px;">
+          </div>
+        </td>
+
+
+      </tr>
+
+      <!-- Gallery row -->
+      <tr *ngIf="showGalleryMap[place.id]">
+        <td colspan="12">
+          <div class="photo-gallery">
+            <img *ngFor="let photo of place.photos" [src]="photo.url" [alt]="place.name" class="photo-thumb" />
+          </div>
+        </td>
+      </tr>
+
+      
+</ng-container>
+</tbody>
+</nz-table>

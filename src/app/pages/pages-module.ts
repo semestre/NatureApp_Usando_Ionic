@@ -14,6 +14,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { TrailService } from '../core/services/trail.service';
 
 
 
@@ -34,7 +35,8 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzTagModule
   ],
   providers: [
-    HomeService
+    HomeService,
+    TrailService
   ],
   exports:[
     HomeComponent,

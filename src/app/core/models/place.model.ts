@@ -1,3 +1,11 @@
+import { Trail } from "./trail.model";
+
+export interface Photo {
+  id: number;
+  url: string;
+}
+
+
 
 export interface Place {
   id: number;
@@ -10,10 +18,8 @@ export interface Place {
   accessible: boolean;
   entryFee: number;
   openingHours: string;
-  createdAt: string; // ISO date string
-  trails: any[] | null; // you can replace 'any[]' with a more specific interface later
-  photos: any[] | null;
-  reviews: any[] | null;
-  amenities: any[] | null;
-  placeAmenities: any[] | null;
+  createdAt: string;
+  photos: Photo[];   
+  amenities: { id: number; name: string }[];  
+  trails?: Trail[];
 }
