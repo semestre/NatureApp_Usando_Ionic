@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Place } from '../models/place.model';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Trail } from '../models/trail.model';
+import { AIAnalyze } from '../models/ai-analize.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,18 @@ export class HomeService {
   }
 
   getAllTrails(): Observable<Trail[]> {
-  console.log('Fetching all trails from API...');
-  return this.httpClient.get<Trail[]>(`${environment.API_URL}/Place/allTrails`);
-}
+    console.log('Fetching all trails from API...');
+    return this.httpClient.get<Trail[]>(`${environment.API_URL}/Place/allTrails`);
+  }
+
+  analyzePlacesWithAI(): Observable<AIAnalyze> {
+    return this.httpClient.get(`${environment.API_URL}/place/ai-analyze`, {
+      responseType: 'text'
+    }).pipe(
+      map(res => JSON.parse(res) as AIAnalyze)
+    );
+  }
+
+
+
 }

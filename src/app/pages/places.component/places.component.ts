@@ -3,6 +3,7 @@ import { Place } from '../../core/models/place.model';
 import { HomeService } from '../../core/services/home.service';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from '../../../environments/environment';
+import { AIAnalyze } from '../../core/models/ai-analize.model';
 
 @Component({
   selector: 'app-places',
@@ -14,7 +15,9 @@ export class PlacesComponent implements OnInit {
   places: Place[] = [];
   showGalleryMap: { [key: number]: boolean } = {};
   showTrailsMap: { [key: number]: boolean } = {};
-
+  loading: boolean = false;
+  modalVisible = false;
+  analyze : AIAnalyze | null = null;
 
   constructor(private homeService: HomeService) { }
 
@@ -88,6 +91,21 @@ export class PlacesComponent implements OnInit {
   }
 
 
-
-
+  analyzePlaces() {
+    console.log('🤖 Analyzing places with AI...');
+    this.modalVisible = false;
+    this.loading = true;
+    this.homeService.analyzePlacesWithAI().subscribe({
+      next: (res)=>{
+        console.log('✅ AI Analysis Result:', res);
+        this.loading = false;
+        this.analyze = res;
+        this.modalVisible = true;
+      },
+      error: (err)=>{
+        console.error('❌ Error analyzing places with AI:', err);
+        this.loading = false;
+      }
+    });
+  }
 }
